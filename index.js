@@ -10,7 +10,10 @@ const categoria = data.events.filter( evento => evento.category);
 const listaCategorias = Array.from(new Set(data.events.map(evento => evento.category)))
 
 //Paso todo al html
-const opciones = listaCategorias.reduce((acc, categoria) => acc += `<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="${categoria}"><label class="form-check-label" for="inlineCheckbox1">${categoria}</label>`, "");
+const opciones = listaCategorias.reduce((acc, categoria) => acc += `<div class="form-check form-check-inline">
+<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="${categoria}">
+<label class="form-check-label" for="inlineCheckbox1">${categoria}</label>
+</div>`, "");
 $checkboxs.innerHTML += opciones;
 
 // console.log($checkboxs.innerHTML);
@@ -24,6 +27,7 @@ function filtrarPalabras(listaEventos){
     const textoIngresado = $search.value.toLowerCase();
     return listaEventos.filter(evento => evento.name.toLowerCase().includes(textoIngresado));   
 }
+
 //Agrego el evento del tipo "change" al id "$search" y le mando la funcion filtrarPalabras
 $checkboxs.addEventListener("change", e => {
     pintarTarjetas(filtrarCruzado(), cards);
@@ -49,7 +53,7 @@ function crearTarjetaConInner(evento){
             <div class="card-body">
                 <h5 class="card-title">${evento.name}</h5>
                 <p class="card-text">${evento.description}</p>
-                <a href="./detailsEvents.html" class="btn btn-primary">More info</a>
+                <a href="./detailsEvents.html?id=${evento._id}&name=${evento.name}" class="btn btn-primary">More info</a>
             </div>
         </div>`
     return template;
@@ -61,7 +65,6 @@ function pintarTarjetas(data, cards){
         template += crearTarjetaConInner(evento);
     }
     cards.innerHTML = template;
-    // console.log(cards.innerHTML);
 }
 
 pintarTarjetas(data.events, cards);
