@@ -1,3 +1,5 @@
+const cards = document.getElementById("cards");
+
 function filtrarEventosPasados(listaEventos){
     let eventosPasados = [];
     for(let evento of data.events){
@@ -23,11 +25,13 @@ function crearTarjetaConInner(evento){
     return template;
 }
 
-let template = '';
-for(let evento of eventosPasados){
-    template += crearTarjetaConInner(evento);
+function pintarTarjetas(eventosPasados, cards ){
+    let template = '';
+    for(let evento of eventosPasados){
+        template += crearTarjetaConInner(evento);
+    }
+    cards.innerHTML = template;
+    console.log(cards.innerHTML);
 }
 
-const cards = document.getElementById("cards");
-cards.innerHTML = template;
-console.log(cards.innerHTML);
+pintarTarjetas(eventosPasados, cards);

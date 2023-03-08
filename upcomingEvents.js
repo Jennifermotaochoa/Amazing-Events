@@ -1,3 +1,5 @@
+const cards = document.getElementById("cards");
+
 function filtrarEventosFuturos(listaEventos){
     let eventosFuturos = [];
     for(let evento of data.events){
@@ -23,11 +25,13 @@ function crearTarjetaConInner(evento){
     return template;
 }
 
-let template = '';
-for(let evento of eventosFuturos){
-    template += crearTarjetaConInner(evento);
+function pintarTarjetas(eventosFuturos, cards ){
+    let template = '';
+    for(let evento of eventosFuturos){
+        template += crearTarjetaConInner(evento);
+    }
+    cards.innerHTML = template;
+    console.log(cards.innerHTML);
 }
 
-const cards = document.getElementById("cards");
-cards.innerHTML = template;
-console.log(cards.innerHTML);
+pintarTarjetas(eventosFuturos, cards);
