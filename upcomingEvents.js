@@ -1,4 +1,4 @@
-//Traigo del html los id o clases que quiero seleccionar
+//Traigo del html los id o clases que quiero seleccionar a traves de los metodos del dom 
 const cards = document.getElementById("cards");
 const $checkboxs = document.querySelector("#style-categoria");
 const $search = document.getElementById("search");
@@ -6,29 +6,35 @@ const $search = document.getElementById("search");
 //Filtro las cards que contienen las categorias de la data
 const categoria = data.events.filter( evento => evento.category);
 
-//Obtengo una lista con las categorias de la data, sin repetir.
+//Obtengo una lista nueva las categorias de la data, sin repetir(que es lo que hace el set(crear objeto)). New es un metodo constructor que genera una nueva instancia
 const listaCategorias = Array.from(new Set(data.events.map(evento => evento.category)))
 
-//Paso todo al html
+
+//Paso todos los checkboxs al html como cuando usaba el "template". El reduce devuelve un unico valor que va acumulando todos los checkboxs.Inicia con un string vacio.
 const opciones = listaCategorias.reduce((acc, categoria) => acc += `<div class="form-check form-check-inline">
 <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="${categoria}">
 <label class="form-check-label" for="inlineCheckbox1">${categoria}</label>
 </div>`, "");
 $checkboxs.innerHTML += opciones;
 
-// console.log($checkboxs.innerHTML);
 
-//Agrego el evento del tipo "input" al id "$search" y le mando la funcion filtrarPalabras
+//Agrego el evento del tipo "input" al id "$search" que captura cuando el usuario escribe. En una constante guardo mi funcion filtrarCruzado() y si esa funcion no tiene coincidencia devuelvo un texto en el html donde estaba las cards. Si coincide pinto las cards en el html.
 $search.addEventListener("input", e => {
-    pintarTarjetas(filtrarCruzado(), cards);
+    const filtrado = filtrarCruzado();
+    if(filtrado == 0){
+        return cards.innerHTML = `<h2> There isn't event with that name.</h2>`
+    }
+    pintarTarjetas(filtrado, cards);
 });
 
+
+//Filtro las tarjetas por la palabra o letra que ingrese el usuario en el input. En la constante textoIngresado guardo el valor que ingrese el usario y lo convierto a minuscula todo lo que ingrese. Luego devuelvo la lista de eventos filtrado por nombre con lo que ingrese el usuario. Tambien el nombre de los eventos los pase a minuscula para que pueda ver si esta incluido en la lista. 
 function filtrarPalabras(listaEventos){
     const textoIngresado = $search.value.toLowerCase();
     return listaEventos.filter(evento => evento.name.toLowerCase().includes(textoIngresado));   
 }
 
-//Agrego el evento del tipo "change" al id "$search" y le mando la funcion filtrarPalabras
+//Agrego el evento del tipo "change" al id "$search" que captura cuando el usuario hace check a las cajitas. Dentro llamo a la funcion pintar tarjetas que recibe a la funcion filtrarCruzado() y las tarjetas que debe mostrar.
 $checkboxs.addEventListener("change", e => {
     pintarTarjetas(filtrarCruzado(), cards);
 });
