@@ -1,14 +1,5 @@
 const detalleTarjeta = document.getElementById("card-detail");
 
-console.log(detalleTarjeta);
-
-const params = new URLSearchParams(location.search);
-
-const id = params.get("id");
-
-let tarjeta = data.events.find(element => element._id === id);
-console.log(tarjeta);
-
 function crearTarjetaConInner(evento){
     return `
     <div class="row g-0">
@@ -36,4 +27,18 @@ function pintarTarjetas(data, detalleTarjeta){
     detalleTarjeta.innerHTML = template;
 }
 
-pintarTarjetas(tarjeta, detalleTarjeta);
+
+const url = "https://mindhub-xj03.onrender.com/api/amazing";
+fetch(url)
+.then(response => response.json())
+.then(data => {
+    const params = new URLSearchParams(location.search);
+
+    const id = params.get("id");
+
+    let tarjeta = data.events.find(element => element._id == id);
+
+    pintarTarjetas(tarjeta, detalleTarjeta);
+
+})
+.catch(error => console.log(error));
